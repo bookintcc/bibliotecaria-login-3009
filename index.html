@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book In - Bibliotecário</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+      <!-- Tela de Login (aparece primeiro) -->
+      <div id="login-screen" class="login-screen">
+        <div class="login-container">
+            <div class="login-logo">
+                <img src="imagens/Book In.png" alt="Logo Book In">
+            </div>
+            <h2>Acesso da Bibliotecária</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="password">Senha de Acesso</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Entrar</button>
+                <div id="login-error" class="error-message" style="display: none;">
+                    Senha incorreta. Tente novamente.
+                </div>
+            </form>
+            <p class="login-info">Para configurar sua senha pela primeira vez, entre em contato com o administrador.</p>
+        </div>
+    </div>
+
+    <div id="main-content" style="display: none;">
+        <header>
+            <div class="logo">
+                <img src="imagens/Book In.png" alt="Logo" id="logo">
+            </div>
+        
+            <div class="admin-title">
+                <h1>Administrador</h1>
+            </div>
+        
+            <div class="search-profile">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Digite o título, autor ou gênero...">
+                    
+                    <div id="results"></div>
+                </div>
+                <div class="icon profile-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+            </div>
+            <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+        </header>
+    </div>
+    
+    <main id="dashboard">
+        <section class="dashboard-section">
+            <h2>Painel de Controle</h2>
+
+            <div class="dashboard-widgets">
+                <div class="widget" onclick="openAddBookForm()">
+                    <i class="fas fa-book-medical"></i>
+                    <h3>Adicionar Livros</h3>
+                </div>
+            
+                <div class="widget" onclick="document.getElementById('catalog-management').scrollIntoView({ behavior: 'smooth' })">
+                    <i class="fas fa-book fa-2x"></i>
+                    <h3>Catálogo</h3>
+                    <p id="available-count"></p>
+                </div>
+            
+                <div class="widget" onclick="document.getElementById('codes').scrollIntoView({ behavior: 'smooth' })">
+                    <i class="fas fa-plus-circle fa-2x"></i>
+                    <h3>Códigos</h3>
+                </div>
+            
+                <div class="widget" onclick="document.getElementById('loans').scrollIntoView({ behavior: 'smooth' })">
+                    <i class="fas fa-exchange-alt fa-2x"></i>
+                    <h3>Empréstimos</h3>
+                    <p id="active-loans"></p>
+                </div>
+            </div>
+            
+            
+        </section>
+    </main>
+
+    <section id="catalog-management" class="section">
+        <h2>Catálogo</h2>
+        <div class="books-grid" id="librarian-catalog">
+        </div>
+    </section>
+
+    <div id="addBookModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeAddBookForm()">&times;</span>
+            <h2>Adicionar Novo Livro</h2>
+            <form id="addBookForm">
+                <div class="form-group">
+                    <label for="title">Título</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="author">Autor</label>
+                    <input type="text" id="author" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="year">Ano de Publicação</label>
+                    <input type="number" id="year" name="year" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descrição</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="genre">Gênero</label>
+                    <select id="genre" name="genre" required>
+                        <option value="">Selecione um Gênero</option>
+                        <option value="romance">Romance</option>
+                        <option value="ficcao">Ficção Científica</option>
+                        <option value="fantasia">Fantasia</option>
+                        <option value="misterio">Mistério</option>
+                        <option value="historia">História</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantidade</label>
+                    <input type="number" id="quantity" name="quantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="cover-image">Capa do Livro</label>
+                    <input type="file" id="cover-image" name="cover-image" accept="image/*">
+                    <div id="image-preview" style="display: none;">
+                        <img id="preview-image" src="#" alt="Pré-visualização da capa">
+                    </div>
+                </div>
+                <button type="submit">Salvar Livro</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="editBookModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeEditBookForm()">&times;</span>
+            <h2>Editar Livro</h2>
+            <form id="editBookForm">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label for="edit-title">Título</label>
+                    <input type="text" id="edit-title" name="edit-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-author">Autor</label>
+                    <input type="text" id="edit-author" name="edit-author" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-year">Ano de Publicação</label>
+                    <input type="number" id="edit-year" name="edit-year" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-description">Descrição</label>
+                    <textarea id="edit-description" name="edit-description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-genre">Gênero</label>
+                    <select id="edit-genre" name="edit-genre" required>
+                        <option value="">Selecione um Gênero</option>
+                        <option value="romance">Romance</option>
+                        <option value="ficcao">Ficção Científica</option>
+                        <option value="fantasia">Fantasia</option>
+                        <option value="misterio">Mistério</option>
+                        <option value="historia">História</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-quantity">Quantidade</label>
+                    <input type="number" id="edit-quantity" name="edit-quantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-cover-image">Capa do Livro</label>
+                    <input type="file" id="edit-cover-image" name="edit-cover-image" accept="image/*">
+                    <div id="edit-image-preview" style="display: none;">
+                        <img id="edit-preview-image" src="#" alt="Pré-visualização da capa">
+                    </div>
+                </div>
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="confirmModal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-button" onclick="closeConfirmModal()">×</span>
+            <h2 id="confirm-title">Confirmar Exclusão</h2>
+            <p id="confirm-message">Tem certeza que deseja excluir este livro?</p>
+            <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+                <button onclick="closeConfirmModal()" style="background-color: #ccc; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;">Cancelar</button>
+                <button onclick="confirmAction()" style="background-color: var(--danger-color); color: white; padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer;">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <section id="codes" class="section">
+        <div class="generated-codes-container">
+            <h2 class="generated-codes-title">Códigos Gerados</h2>
+            <div class="generated-codes" id="generated-codes-list">
+                </div>
+        </div>
+    </section>
+    
+    <section id="loans" class="section">
+        <h2 class="generated-codes-title">Empréstimos</h2>
+        <div class="generated-codes" id="generated-loans-list">
+            </div>
+    </section>
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper></div>
+    </div>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+
+    <script src="script.js"> </script>
+</body>
+</html>
