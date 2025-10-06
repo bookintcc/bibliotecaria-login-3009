@@ -10,7 +10,7 @@ const initialBooks = [
         description: "Uma jovem descobre uma porta secreta para um mundo alternativo que é uma versão sombria e sinistra de sua própria vida.",
         genre: "fantasia",
         quantity: 1,
-        cover: "imagens/livroo.jpg"
+        cover: "livroo.jpg"
     },
     {
         id: 3,
@@ -20,7 +20,7 @@ const initialBooks = [
         description: "O primeiro romance de Sherlock Holmes, onde o detetive e Dr. Watson investigam um misterioso assassinato em Londres.",
         genre: "misterio",
         quantity: 1,
-        cover: "imagens/livro2.jpg"
+        cover: "livro2.jpg"
     },
     {
         id: 4,
@@ -40,7 +40,7 @@ const initialBooks = [
         description: "Crianças descobrem um mundo mágico chamado Nárnia, liderado pelo leão Aslan, e se envolvem em uma batalha épica entre o bem e o mal.",
         genre: "fantasia",
         quantity: 1,
-        cover: "imagens/livro4.jpg"
+        cover: "livro4.jpg"
     },
     {
         id: 6,
@@ -742,5 +742,6 @@ function setupSearchSystem() {
             s.setAttribute("src", "https://cdn.userway.org/widget.js");
             (d.body || d.head).appendChild(s);
         })(document);
+
 
 
